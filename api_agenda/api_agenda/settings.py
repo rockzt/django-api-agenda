@@ -40,7 +40,8 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
-    'django.contrib.staticfiles',
+    'api'
+    #'django.contrib.staticfiles',
 ]
 
 MIDDLEWARE = [
@@ -79,11 +80,11 @@ WSGI_APPLICATION = 'api_agenda.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': getenv("DB_NAME"),
-        'HOST': getenv("DB_HOST"),
         'USER': getenv("DB_USER"),
         'PASSWORD': getenv("DB_PASSWORD"),
+        'HOST': getenv("DB_HOST"),
         'PORT': "5432",
     }
 }
@@ -129,3 +130,15 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+# Using custom authentication method to access views
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+    #  Classes to use to validate authentication to validate views
+        'rest_framework_simplejwt.authentication.JWTAuthentication',  # Type of authentication will be used - JWT token
+    ],
+    'DEFAULT_PERMISSION_CLASSES': [
+        "rest_framework.permissions.IsAuthenticated",  # To access all views, users must be authenticated
+    ]
+}
